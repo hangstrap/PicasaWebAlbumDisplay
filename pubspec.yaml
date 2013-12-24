@@ -1,7 +1,9 @@
 name: PicasaWebAlbumDisplay
 description: A sample Polymer application
 dependencies:
-    polymer: any
+  picasawebalbums:
+    path: C:\Users\hangs_000\Documents\GitHub\PicasaWebAlbums
+  polymer: any
 transformers:
 - polymer:
     entry_points: web/picasawebalbumdisplay.html
