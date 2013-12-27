@@ -8,10 +8,8 @@ library picasa_web_album;
 import "dart:async";
 import 'package:json_object/json_object.dart';
 
-
-abstract class HttpRequester{
-  Future<String> get(Uri url);
-}
+//Use this method to make the correct type of httpRequest
+typedef Future<String> HttpRequester(Uri url);
 
 class Photo{
   JsonObject json;
@@ -44,7 +42,7 @@ class Album {
   Future<List<Photo>> get photos{
     
     Uri url = getAlbumUri();
-    return requester.get(url).then( (String response){
+    return requester(url).then( (String response){
       
       List<Photo> result = [];
       
@@ -83,7 +81,7 @@ class User{
 
   Future<List<Album>> albums(){
     Uri myAlbum = Uri.parse("https://picasaweb.google.com/data/feed/api/user/${id}?alt=json");
-    return requester.get( myAlbum ).then( (String response){
+    return requester( myAlbum ).then( (String response){
       JsonObject json = new JsonObject.fromJsonString( response);
       return loadFromJson( json);
     });    

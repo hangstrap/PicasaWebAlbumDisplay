@@ -5,18 +5,15 @@ import 'dart:io';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 
-class ServerHttpRequester implements HttpRequester{
-  
-  Future<String> get(Uri url) {
-      return http.get( url).then( (response)=> response.body);
-  }
+Future<String> getHttpRequest(Uri url) {
+    return http.get( url).then( (response)=> response.body);
 }
 
 void main(){
   group( "When loading from precanned json data", (){
     
     test( "should load album from json",() {
-      Album album = new Album( getJsonForAlbum(), new ServerHttpRequester());
+      Album album = new Album( getJsonForAlbum(), getHttpRequest);
       expect( album.title, equals( "Tessa d\'Jappervilla"));
       expect( album.rights, equals( "public"));
       expect( album.getAlbumUri(), equals( Uri.parse("https://picasaweb.google.com/data/feed/api/user/101488109748928583216/albumid/5938894451891583841?alt=json&imgmax=d")));
@@ -32,7 +29,7 @@ void main(){
     });
     
     test("should load albums from json object", (){        
-      List<Album> albums = new User("aa", new ServerHttpRequester()).loadFromJson( getJsonForUser());
+      List<Album> albums = new User("aa", getHttpRequest).loadFromJson( getJsonForUser());
       expect( albums.length, equals( 85));
       expect( albums.first.title, equals( "Tessa d\'Jappervilla"));
       expect( albums.last.title, equals( "Mana Island"));
@@ -43,17 +40,17 @@ void main(){
     
     User user ;
     setUp((){
-      user = new User( "101488109748928583216", new ServerHttpRequester());
+      user = new User( "101488109748928583216", getHttpRequest);
     });
     
     test( "should return at least the current number of my albums", (){
-      User user = new User( "101488109748928583216", new ServerHttpRequester());
+      User user = new User( "101488109748928583216", getHttpRequest);
       Future< List<Album>> albumsFuture = user.albums();
       expect( albumsFuture.then( (albums)=> albums.length), completion( greaterThanOrEqualTo( 85)));      
     });
     
     test( "should return my first album correctly", (){
-      User user = new User( "101488109748928583216", new ServerHttpRequester());
+      User user = new User( "101488109748928583216", getHttpRequest);
       Future< List<Album>> albumsFuture = user.albums();
       expect( albumsFuture.then( (albums)=> albums.first.title), completion( equals( 'Tessa d\'Jappervilla')));      
     });
