@@ -1,9 +1,11 @@
 name: PicasaWebAlbumDisplay
 description: A sample Polymer application
 dependencies:
-  picasawebalbums:
-    path: C:\Users\hangs_000\Documents\GitHub\PicasaWebAlbums
+  http: any
+  json_object: any
   polymer: any
+dev_dependencies:
+  unittest: any
 transformers:
 - polymer:
     entry_points: web/picasawebalbumdisplay.html

@@ -1,5 +1,7 @@
 import 'package:polymer/polymer.dart';
-import 'package:picasawebalbums/picasa_web_albums.dart';
+import 'picasa_web_albums.dart';
+import 'dart:html';
+import "dart:async";
 
 /**
  * A Polymer click counter element.
@@ -12,8 +14,24 @@ class PicasaPhoto extends PolymerElement {
     
   PicasaPhoto.created() : super.created() {
     
-  //  User user = new User( "101488109748928583216"); 
+    User user = new User( "101488109748928583216", new ClientHttpRequester());
+    user.albums().then( processAlbums);
   }
 
+  
+  processAlbums(List<Album> albums) {
+    albums.first.photos.then( processPhotos);
+  }
+  
+  processPhotos(List<Photo> photos) {
+    imageUrl = photos.last.url(imgmax: 600);
+  }
+}
+
+class ClientHttpRequester extends HttpRequester{
+  
+  Future<String> get(Uri url) {
+    return HttpRequest.getString( url.toString());
+  }
 }
 
