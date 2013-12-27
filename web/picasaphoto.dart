@@ -9,6 +9,8 @@ import "dart:async";
 @CustomTag('picasa-photo')
 class PicasaPhoto extends PolymerElement {
   
+  List<Photo> photos = [];
+  Photo current = null;
   
   @observable
   String imageUrl = "https://lh5.googleusercontent.com/-IvEtX1Hcztg/UoaKrLqG3-I/AAAAAAAAT7E/9jyfqPDIl5c/s1200/IMG_5271.JPG";
@@ -25,9 +27,28 @@ class PicasaPhoto extends PolymerElement {
   }
   
   processPhotos(List<Photo> photos) {
-    imageUrl = photos.first.url(imgmax: 600);
+    this.photos = photos;
+    current = photos.first;
+    displayNextPhoto();
+  }
+  
+  void displayNextPhoto(){
+    Duration delay = new Duration( seconds:1);
+    new Future.delayed( delay).then((_){
+      
+      int index = photos.indexOf( current) +1;
+      if( index == photos.length){
+        index = 0;
+      }
+      current = photos.elementAt(index);      
+      imageUrl = current.url(imgmax: 600);
+      displayNextPhoto();
+    });
+    
   }
 }
+
+
 
 Future<String> getHttpRequest(Uri url) {
   return HttpRequest.getString( url.toString());
