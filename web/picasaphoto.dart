@@ -2,6 +2,7 @@ import 'package:polymer/polymer.dart';
 import 'picasa_web_albums.dart';
 import 'dart:html';
 import "dart:async";
+import "random_photo_list.dart";
 
 /**
  * A Polymer click counter element.
@@ -9,7 +10,7 @@ import "dart:async";
 @CustomTag('picasa-photo')
 class PicasaPhoto extends PolymerElement {
   
-  List<Photo> photos = [];
+  RandomPhotoList<Photo> randomPhotoList = new RandomPhotoList();
   Photo current = null;
   
   @observable
@@ -19,29 +20,35 @@ class PicasaPhoto extends PolymerElement {
     
     User user = new User( "101488109748928583216", getHttpRequest);
     user.albums().then( processAlbums);
+
   }
 
   
   processAlbums(List<Album> albums) {
-    albums.first.photos.then( processPhotos);
+    albums.forEach( (album)=>album.photos.then( processPhotos));
+    //albums.first.photos.then( processPhotos);
+    //albums.last.photos.then( processPhotos);
   }
   
   processPhotos(List<Photo> photos) {
-    this.photos = photos;
-    current = photos.first;
-    displayNextPhoto();
+    if( randomPhotoList.originalItems.length ==0){
+      displayNextPhoto();      
+    }
+    randomPhotoList.addList(photos);
+    current = randomPhotoList.nextItem();
   }
   
   void displayNextPhoto(){
-    Duration delay = new Duration( seconds:1);
+    Duration delay = new Duration( seconds:3);
     new Future.delayed( delay).then((_){
       
-      int index = photos.indexOf( current) +1;
-      if( index == photos.length){
-        index = 0;
+      current = randomPhotoList.nextItem(); 
+      if( current != null){
+        imageUrl = current.url(imgmax: 600);
+        print( current.title);
+      }else{
+        print( "nothing to display");
       }
-      current = photos.elementAt(index);      
-      imageUrl = current.url(imgmax: 600);
       displayNextPhoto();
     });
     
@@ -51,6 +58,7 @@ class PicasaPhoto extends PolymerElement {
 
 
 Future<String> getHttpRequest(Uri url) {
+  print( url.toString());
   return HttpRequest.getString( url.toString());
 }
 
