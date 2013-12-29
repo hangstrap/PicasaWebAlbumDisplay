@@ -26,8 +26,6 @@ class PicasaPhoto extends PolymerElement {
   
   processAlbums(List<Album> albums) {
     albums.forEach( (album)=>album.photos.then( processPhotos));
-    //albums.first.photos.then( processPhotos);
-    //albums.last.photos.then( processPhotos);
   }
   
   processPhotos(List<Photo> photos) {
@@ -35,7 +33,6 @@ class PicasaPhoto extends PolymerElement {
       displayNextPhoto();      
     }
     randomPhotoList.addList(photos);
-    current = randomPhotoList.nextItem();
   }
   
   void displayNextPhoto(){

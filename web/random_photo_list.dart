@@ -19,8 +19,7 @@ class RandomPhotoList<T>{
     return nextItemList.removeAt( 0);
   }
   
-  List<T> randomSubList({int length: 10}) {
-    
+  List<T> randomSubList({int length: 10}) {    
     if( length >= items.length){
       return _listIsAlmostEmpty();      
     }else{
@@ -30,9 +29,11 @@ class RandomPhotoList<T>{
 
   List<T> _listIsFullEnough(int length) {
     int startFrom = getRandom(length);
-    int endsAt = startFrom + length;        
+    int endsAt = startFrom + length;
+
     List<T> result = new List<T>.from( items.getRange( startFrom, endsAt));
     items.removeRange( startFrom, endsAt);
+
     return result;
   }
 
