@@ -1,6 +1,6 @@
 import 'package:polymer/builder.dart';
         
-main(args) {
+main(args) { 
 
   build(entryPoints: ['web/picasawebalbumdisplay.html'],
         options: parseOptions(args));
