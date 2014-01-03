@@ -12,11 +12,15 @@ import 'package:json_object/json_object.dart';
 typedef Future<String> HttpRequester(Uri url);
 
 class Photo{
-  JsonObject json;
-  Photo( this.json);
+  final JsonObject json;
+  final Album album;
+  
+  Photo( this.album, this.json);
   
   String get title => json.title.$t;
   String get summary => json.summary.$t;
+  
+  
   String url( {imgmax:'d'}){
     if( imgmax=='d'){
       return json.media$group.media$content[0].url;
@@ -48,7 +52,7 @@ class Album {
       
       JsonObject json = new JsonObject.fromJsonString( response);
       List<JsonObject> jsonEntries = json.feed.entry;
-      jsonEntries.forEach( (e)=> result.add( new Photo( e)));
+      jsonEntries.forEach( (e)=> result.add( new Photo( this, e)));
       
       return result;
     });

@@ -4,6 +4,8 @@ import 'package:unittest/unittest.dart';
 import 'dart:io';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:unittest/mock.dart';
+
 
 Future<String> getHttpRequest(Uri url) {
     return http.get( url).then( (response)=> response.body);
@@ -21,7 +23,10 @@ void main(){
     });
     
     test( "should load photo from json", (){
-      Photo photo = new Photo( getJsonForPhoto());
+      
+      MockAlbum mockAlbum = new MockAlbum();
+      Photo photo = new Photo( mockAlbum, getJsonForPhoto());
+      expect( photo.album, equals( mockAlbum));
       expect( photo.title, equals( "2013-10-26 09.36.22.jpg"));
       expect( photo.summary, equals( "Some sort of comment"));
       expect( photo.url(),                equals( "https://lh5.googleusercontent.com/-IvEtX1Hcztg/UoaKrLqG3-I/AAAAAAAAT7E/9jyfqPDIl5c/d/IMG_5271.JPG"));
@@ -78,3 +83,5 @@ JsonObject getJsonForAlbum(){
 JsonObject getJsonForUser(){
   return new JsonObject.fromJsonString( new File(  "user.json").readAsStringSync(), new JsonObject())  ;
 }
+
+class MockAlbum extends Mock implements Album{}
