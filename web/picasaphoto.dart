@@ -23,6 +23,7 @@ class PicasaPhoto extends PolymerElement {
     User user = new User( "101488109748928583216", getHttpRequest);
     user.albums().then( processAlbums);
 
+    
   }
 
   
@@ -32,26 +33,29 @@ class PicasaPhoto extends PolymerElement {
   
   processPhotos(List<Photo> photos) {
     if( randomPhotoList.originalItems.length ==0){
-      displayNextPhoto();      
+      
+      print( "starting up stream");
+      Stream stream = new Stream.periodic( new Duration ( seconds:3),(count){
+        print( "inside stream");
+        displayNextPhoto();
+      });
+      
+      stream.listen( (_)=>print("in listener"));
     }
     randomPhotoList.addList(photos);
   }
   
   void displayNextPhoto(){
-    Duration delay = new Duration( seconds:3);
-    new Future.delayed( delay).then((_){
-      
-      current = randomPhotoList.nextItem(); 
-      if( current != null){
-        imageUrl = current.url(imgmax: 600);
-        title = "Displaying: '${current.album.title}' '${current.title}' '${current.summary}'";
-        print( current.title);
-      }else{
-        print( "nothing to display");
-      }
-      displayNextPhoto();
-    });
-    
+
+     print( "displaying next photo");
+    current = randomPhotoList.nextItem(); 
+    if( current != null){
+      imageUrl = current.url(imgmax: 600);
+      print( current.title);
+    }else{
+      print( "nothing to display");
+    }    
+
   }
 }
 
