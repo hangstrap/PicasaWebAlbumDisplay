@@ -32,15 +32,9 @@ class PicasaPhoto extends PolymerElement {
   }
   
   processPhotos(List<Photo> photos) {
-    if( randomPhotoList.originalItems.length ==0){
-      
-      print( "starting up stream");
-      Stream stream = new Stream.periodic( new Duration ( seconds:3),(count){
-        print( "inside stream");
-        displayNextPhoto();
-      });
-      
-      stream.listen( (_)=>print("in listener"));
+    if( randomPhotoList.originalItems.length ==0){      
+      //Start up a stream to display new photos
+      new Stream.periodic( new Duration ( seconds:3)).listen( (_)=>displayNextPhoto());  
     }
     randomPhotoList.addList(photos);
   }
