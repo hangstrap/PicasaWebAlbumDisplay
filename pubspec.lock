@@ -65,10 +65,18 @@ packages:
     description: polymer
     source: hosted
     version: "0.9.3+2"
+  polymer_elements:
+    description: polymer_elements
+    source: hosted
+    version: "0.1.1+3"
   polymer_expressions:
     description: polymer_expressions
     source: hosted
     version: "0.9.1"
+  polymer_ui_elements:
+    description: polymer_ui_elements
+    source: hosted
+    version: "0.1.1+1"
   shadow_dom:
     description: shadow_dom
     source: hosted

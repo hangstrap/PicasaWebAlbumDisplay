@@ -17,35 +17,38 @@ class PicasaPhoto extends PolymerElement {
   String imageUrl = "https://lh5.googleusercontent.com/-IvEtX1Hcztg/UoaKrLqG3-I/AAAAAAAAT7E/9jyfqPDIl5c/s1200/IMG_5271.JPG";
   @observable  
   String title = "";
+  @observable
+  var delay = 3;
+  
+  Stream stream;
     
   PicasaPhoto.created() : super.created() {
     
     User user = new User( "101488109748928583216", getHttpRequest);
-    user.albums().then( processAlbums);
-
-    
+    user.albums().then( _processAlbums);
   }
 
-  
-  processAlbums(List<Album> albums) {
-    albums.forEach( (album)=>album.photos.then( processPhotos));
+  void delayChanged( ){
+    print( "had event ${delay}");
   }
   
-  processPhotos(List<Photo> photos) {
+  _processAlbums(List<Album> albums) {
+    albums.forEach( (album)=>album.photos.then( _processPhotos));
+  }
+  
+  _processPhotos(List<Photo> photos) {
     if( randomPhotoList.originalItems.length ==0){      
       //Start up a stream to display new photos
-      new Stream.periodic( new Duration ( seconds:3)).listen( (_)=>displayNextPhoto());  
+      stream = new Stream.periodic( new Duration ( seconds:3))..listen( (_)=>_displayNextPhoto());  
     }
     randomPhotoList.addList(photos);
   }
   
-  void displayNextPhoto(){
+  void _displayNextPhoto(){
 
-     print( "displaying next photo");
     current = randomPhotoList.nextItem(); 
     if( current != null){
       imageUrl = current.url(imgmax: 600);
-      print( current.title);
     }else{
       print( "nothing to display");
     }    
