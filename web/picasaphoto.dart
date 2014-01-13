@@ -18,9 +18,9 @@ class PicasaPhoto extends PolymerElement {
   @observable  
   String title = "";
   @observable
-  var delay = 3;
-  
-  Stream stream;
+  String delay = '3';
+
+  StreamSubscription nextPhotoSubscription;
     
   PicasaPhoto.created() : super.created() {
     
@@ -30,6 +30,7 @@ class PicasaPhoto extends PolymerElement {
 
   void delayChanged( ){
     print( "had event ${delay}");
+    _setUpStream();
   }
   
   _processAlbums(List<Album> albums) {
@@ -37,15 +38,13 @@ class PicasaPhoto extends PolymerElement {
   }
   
   _processPhotos(List<Photo> photos) {
-    if( randomPhotoList.originalItems.length ==0){      
-      //Start up a stream to display new photos
-      stream = new Stream.periodic( new Duration ( seconds:3))..listen( (_)=>_displayNextPhoto());  
+    if( randomPhotoList.originalItems.length ==0){
+      _setUpStream();
     }
     randomPhotoList.addList(photos);
   }
   
   void _displayNextPhoto(){
-
     current = randomPhotoList.nextItem(); 
     if( current != null){
       imageUrl = current.url(imgmax: 600);
@@ -53,6 +52,16 @@ class PicasaPhoto extends PolymerElement {
       print( "nothing to display");
     }    
 
+  }
+  
+  void _setUpStream(){
+    
+    if( nextPhotoSubscription != null){
+      nextPhotoSubscription.cancel();
+    };
+    int currentDelay = int.parse( delay);
+    Stream stream = new Stream.periodic( new Duration ( seconds: currentDelay));
+    nextPhotoSubscription = stream.listen( (_)=>_displayNextPhoto());
   }
 }
 
