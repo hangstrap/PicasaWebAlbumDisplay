@@ -55,38 +55,23 @@ void main(){
     });
     
 
-    
-    test( "should return a Album titled 'd\'Jappervilla'", (){
-      User user = new User( "101488109748928583216", getHttpRequest);
-      Future< List<Album>> albumsFuture = user.albums();
-
-      expect( albumsFuture.then( (albums)=> albums.any( isAlbumTess )), completion( equals( true)));
-      
-    });
-    
-    test( "Album titled 'd\'Jappervilla' should contain a photo with a title of '2013-10-26 09.36.22.jpg'", (){
+    test( "The album titled 'd\'Jappervilla' should contain a photo with a title of '2013-10-26 09.36.22.jpg'", (){
       
       Future< List<Album>> albumsFuture = user.albums();      
-      expect( albumsFuture.then( isPhotoInAlbum), completion(equals( true)));
-
+      expect( albumsFuture.then( (albums)=>isPhotoInAlbum( albums, 'Tessa d\'Jappervilla', "2013-10-26 09.36.22.jpg")), completion(equals( true)));
     });    
   });
 }
-Future<bool> isPhotoInAlbum( List<Album> albums){
-  Album album = findAlbumTess( albums);
+Future<bool> isPhotoInAlbum( List<Album> albums, String albumTitle, String photoTitle){
+
+  Album album = albums.firstWhere( (album)=> album.title == albumTitle);
+
+  bool findPhoto(List<Photo> photos){
+    return photos.any( ( Photo photo) => photo.title == photoTitle);
+  }  
   return album.photos.then( findPhoto);
 }
 
-Album findAlbumTess( List<Album> albums){
-  return albums.firstWhere( isAlbumTess);
-}
-bool isAlbumTess(Album album){
-  return album.title == 'Tessa d\'Jappervilla';
-}
-
-bool findPhoto(List<Photo> photos){
-  return photos.any( ( Photo photo) => photo.title == "2013-10-26 09.36.22.jpg");
-}
 
 
 JsonObject getJsonForPhoto() {
