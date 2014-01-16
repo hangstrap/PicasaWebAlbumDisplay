@@ -54,21 +54,40 @@ void main(){
       expect( albumsFuture.then( (albums)=> albums.length), completion( greaterThanOrEqualTo( 85)));      
     });
     
-    test( "should return my first album correctly", (){
+
+    
+    test( "should return a Album titled 'd\'Jappervilla'", (){
       User user = new User( "101488109748928583216", getHttpRequest);
       Future< List<Album>> albumsFuture = user.albums();
-      expect( albumsFuture.then( (albums)=> albums.first.title), completion( equals( 'Tessa d\'Jappervilla')));      
+
+      expect( albumsFuture.then( (albums)=> albums.any( isAlbumTess )), completion( equals( true)));
+      
     });
     
-    test( "should return my first photo of my first album correctly", (){
+    test( "Album titled 'd\'Jappervilla' should contain a photo with a title of '2013-10-26 09.36.22.jpg'", (){
       
       Future< List<Album>> albumsFuture = user.albums();      
-      expect( albumsFuture.then( (albums)=>albums.first.photos.then( (photos)=>photos.first.title)), completion( equals( "2013-10-26 09.36.22.jpg")));
+      expect( albumsFuture.then( isPhotoInAlbum), completion(equals( true)));
+
     });    
   });
-  
-  
 }
+Future<bool> isPhotoInAlbum( List<Album> albums){
+  Album album = findAlbumTess( albums);
+  return album.photos.then( findPhoto);
+}
+
+Album findAlbumTess( List<Album> albums){
+  return albums.firstWhere( isAlbumTess);
+}
+bool isAlbumTess(Album album){
+  return album.title == 'Tessa d\'Jappervilla';
+}
+
+bool findPhoto(List<Photo> photos){
+  return photos.any( ( Photo photo) => photo.title == "2013-10-26 09.36.22.jpg");
+}
+
 
 JsonObject getJsonForPhoto() {
   return new JsonObject.fromJsonString( new File(  "photo.json").readAsStringSync());
