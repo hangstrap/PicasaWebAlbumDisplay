@@ -16,7 +16,7 @@ class PicasaPhoto extends PolymerElement {
   @observable
   String imageUrl = "https://lh5.googleusercontent.com/-IvEtX1Hcztg/UoaKrLqG3-I/AAAAAAAAT7E/9jyfqPDIl5c/s1200/IMG_5271.JPG";
   @observable  
-  String title = "";
+  String title = "cute puppy";
   @observable
   String delay = '3';
 
@@ -48,6 +48,7 @@ class PicasaPhoto extends PolymerElement {
     current = randomPhotoList.nextItem(); 
     if( current != null){
       imageUrl = current.url(imgmax: 600);
+      title= "${current.album.title}  ${current.summary}";
     }else{
       print( "nothing to display");
     }    
