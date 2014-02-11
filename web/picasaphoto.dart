@@ -58,7 +58,7 @@ class PicasaPhoto extends PolymerElement {
     if( current != null){
       imageUrl = current.url(imgmax: _getImgageMaxSize());
       title= "Album '${current.album.title}'  ${current.summary}";
-          }else{
+    }else{
       print( "nothing to display");
     }    
   }
