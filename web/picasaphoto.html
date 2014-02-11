@@ -1,9 +1,12 @@
 <polymer-element name="picasa-photo">
   <template>
-        <h4>{{title}}</h4>
+
+       <h4>{{title}}</h4>
+
       <input type="range" name="points" min="1" step ="1" max="10" value={{delay}} on-change="{{delayChanged}}">
       <div></div>
-      <img  src="{{imageUrl}}">
+      <img id="img-tag" src="{{imageUrl}}" height="100%" width="100%" on-change="{{abcChanged}}">
+     
   </template>
   <script type="application/dart" src="picasaphoto.dart"></script>
 </polymer-element>
