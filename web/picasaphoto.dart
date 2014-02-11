@@ -34,12 +34,11 @@ class PicasaPhoto extends PolymerElement {
 
   void delayChanged( ){
     print( "had event ${delay}");
-    
-
-    print( "width=${imgElement.clientWidth} height=${imgElement.clientHeight}");
     _setUpStream();
   }
-  
+  void imageEvent(){
+    title= "Album '${current.album.title}'  ${current.summary}";
+  }
 
   
   _processAlbums(List<Album> albums) {
@@ -57,7 +56,7 @@ class PicasaPhoto extends PolymerElement {
     current = randomPhotoList.nextItem(); 
     if( current != null){
       imageUrl = current.url(imgmax: _getImgageMaxSize());
-      title= "Album '${current.album.title}'  ${current.summary}";
+   
     }else{
       print( "nothing to display");
     }    
