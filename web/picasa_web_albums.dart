@@ -19,7 +19,9 @@ class Photo{
   
   String get title => json.title.$t;
   String get summary => json.summary.$t;
-  
+  int get width => int.parse( json.gphoto$width.$t);
+  int get height => int.parse( json.gphoto$height.$t);
+  bool get isLandscape => width > height;
   
   String url( {imgmax:'d'}){
     if( imgmax=='d'){

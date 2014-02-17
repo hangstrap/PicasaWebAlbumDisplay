@@ -29,6 +29,9 @@ void main(){
       expect( photo.album, equals( mockAlbum));
       expect( photo.title, equals( "2013-10-26 09.36.22.jpg"));
       expect( photo.summary, equals( "Some sort of comment"));
+      expect( photo.width, equals( 1536));
+      expect( photo.height, equals( 2048));      
+      expect( photo.isLandscape, equals( false));
       expect( photo.url(),                equals( "https://lh5.googleusercontent.com/-IvEtX1Hcztg/UoaKrLqG3-I/AAAAAAAAT7E/9jyfqPDIl5c/d/IMG_5271.JPG"));
       expect( photo.url( imgmax:"1200"),  equals( "https://lh5.googleusercontent.com/-IvEtX1Hcztg/UoaKrLqG3-I/AAAAAAAAT7E/9jyfqPDIl5c/s1200/IMG_5271.JPG"));
     });
