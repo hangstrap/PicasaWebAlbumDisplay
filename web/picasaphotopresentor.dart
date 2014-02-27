@@ -1,5 +1,5 @@
 import 'picasa_web_albums.dart';
-import 'dart:html';
+
 import "dart:async";
 import "dart:math";
 import "random_photo_list.dart";
@@ -9,7 +9,9 @@ class PicasaPhotoView{
   String title;  
   String delay;    
   String width;
-  String height;  
+  String height;
+  int get clientHeight=>0;
+  int get clientWidth=>0;
 }
 class PicasaPhotoPresentor{
 
@@ -19,14 +21,12 @@ class PicasaPhotoPresentor{
   Photo current = null;
   
   
-  Element imgElement;
   StreamSubscription nextPhotoSubscription;
     
-  PicasaPhotoPresentor ( PicasaPhotoView view,  Element imgElement, getHttpRequest ){
-    this.view = view;
-    this.imgElement = imgElement;
-    User user = new User( "101488109748928583216", getHttpRequest);
-    user.albums().then( _processAlbums);
+  PicasaPhotoPresentor ( PicasaPhotoView view,  User user){
+    
+    this.view = view;   
+//    user.albums().then( _processAlbums);
   }
 
   void delayChanged( ){
@@ -63,7 +63,7 @@ class PicasaPhotoPresentor{
   }
   
   int _getImgageMaxSize(){
-    return max( imgElement.clientHeight, imgElement.clientWidth);
+    return max( view.clientHeight, view.clientWidth);
   }
 
   

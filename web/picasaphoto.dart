@@ -1,5 +1,6 @@
 import 'package:polymer/polymer.dart';
 import 'picasaphotopresentor.dart';
+import 'picasa_web_albums.dart';
 
 import 'dart:html';
 import "dart:async";
@@ -21,14 +22,19 @@ class PicasaPhoto extends PolymerElement implements PicasaPhotoView{
   String width ="";
   @observable
   String height="";
+  
+  int get clientHeight => imgElement.clientHeight;
+  int get clientWidth=>imgElement.clientWidth;
 
   PicasaPhotoPresentor presentor;
-  
+  Element imgElement; 
   
   PicasaPhoto.created() : super.created() {
     
-    Element imgElement = shadowRoot.querySelector('#img-tag');
-    presentor = new PicasaPhotoPresentor( this, imgElement, getHttpRequest);
+    imgElement = shadowRoot.querySelector('#img-tag');
+    User user = new User( "101488109748928583216", getHttpRequest);
+    
+    presentor = new PicasaPhotoPresentor( this, user);
   }
 
   void delayChanged( ){
