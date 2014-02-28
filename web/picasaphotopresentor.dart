@@ -26,7 +26,7 @@ class PicasaPhotoPresentor{
   PicasaPhotoPresentor ( PicasaPhotoView view,  User user){
     
     this.view = view;   
-//    user.albums().then( _processAlbums);
+    user.albums().then( _processAlbums);
   }
 
   void delayChanged( ){

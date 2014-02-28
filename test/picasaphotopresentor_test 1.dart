@@ -10,6 +10,12 @@ class MockUser extends Mock implements User{}
 class MockAlbum extends Mock implements Album{}
 class MockPhoto extends Mock implements Photo{}
 
+class MockFutureList<T> extends Mock implements Future<T>{
+  
+  MockFutureList( List<T> items){
+    when( callsTo( "then")).thenReturn( items);
+  }
+}
 
 void main(){
   
@@ -22,15 +28,14 @@ void main(){
     List<Album> listOfAlbums = [ album];
 
     MockPhoto photo = new MockPhoto();
-    List<Album> listOfPhotos = [ album];
-    
-    user.when( callsTo( "albums")).thenReturn(  new Future( ()=>listOfAlbums ));    
-    album.when( callsTo( "photos")).thenReturn( new Future( ()=>listOfPhotos));
+    List<Album> listOfPhotos = [ album];        
+    user.when( callsTo( "albums")).thenReturn(  new MockFutureList(listOfAlbums));    
+    album.when( callsTo( "photos")).thenReturn( new MockFutureList( listOfPhotos));
     
     PicasaPhotoPresentor underTest = new PicasaPhotoPresentor( view, user);
     
     user.getLogs( callsTo( "albums")).verify( happenedOnce);
-    //expect( album.getLogs( callsTo( "photos")).verify( happenedOnce));
+    album.getLogs( callsTo( "photos")).verify( happenedOnce);
 
   });
 }
