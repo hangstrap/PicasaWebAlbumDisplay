@@ -5,11 +5,11 @@ import "dart:math";
 import "random_photo_list.dart";
 
 class PicasaPhotoView{
-  String imageUrl ;   
-  String title;  
-  String delay;    
-  String width;
-  String height;
+  String imageUrl="" ;   
+  String title="";  
+  String delay="1";    
+  String width="100%";
+  String height="100%";
   int get clientHeight=>0;
   int get clientWidth=>0;
 }
@@ -17,14 +17,14 @@ class PicasaPhotoPresentor{
 
   PicasaPhotoView view;
   
-  RandomPhotoList<Photo> randomPhotoList = new RandomPhotoList();
+  RandomPhotoList<Photo> randomPhotoList;
   Photo current = null;
   
   
   StreamSubscription nextPhotoSubscription;
     
-  PicasaPhotoPresentor ( PicasaPhotoView view,  User user){
-    
+  PicasaPhotoPresentor ( RandomPhotoList<Photo> randomPhotoList, PicasaPhotoView view,  User user){
+    this.randomPhotoList = randomPhotoList;
     this.view = view;   
     user.albums().then( _processAlbums);
   }
@@ -42,7 +42,8 @@ class PicasaPhotoPresentor{
 
   
   _processAlbums(List<Album> albums) {
-    albums.forEach( (album)=>album.photos.then( _processPhotos));
+    print( "here ${albums.length}");
+    albums.forEach( (album)=> album.photos().then( _processPhotos)    );
   }
   
   _processPhotos(List<Photo> photos) {

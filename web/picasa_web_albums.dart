@@ -45,7 +45,7 @@ class Album {
   String get title => json.title.$t;
   String get rights => json.rights.$t;
   
-  Future<List<Photo>> get photos{
+  Future<List<Photo>> photos(){
     
     Uri url = getAlbumUri();
     return requester(url).then( (String response){

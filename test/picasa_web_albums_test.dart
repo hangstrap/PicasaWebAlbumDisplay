@@ -72,7 +72,7 @@ Future<bool> isPhotoInAlbum( List<Album> albums, String albumTitle, String photo
   bool findPhoto(List<Photo> photos){
     return photos.any( ( Photo photo) => photo.title == photoTitle);
   }  
-  return album.photos.then( findPhoto);
+  return album.photos().then( findPhoto);
 }
 
 
