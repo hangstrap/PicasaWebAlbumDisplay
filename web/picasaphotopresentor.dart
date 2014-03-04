@@ -22,11 +22,12 @@ class PicasaPhotoPresentor{
   
   
   StreamSubscription nextPhotoSubscription;
-    
-  PicasaPhotoPresentor ( RandomPhotoList<Photo> randomPhotoList, PicasaPhotoView view,  User user){
+  factory PicasaPhotoPresentor.create ( PicasaPhotoView view){
+    return new PicasaPhotoPresentor( new RandomPhotoList(), view);    
+  }
+  PicasaPhotoPresentor ( RandomPhotoList<Photo> randomPhotoList, PicasaPhotoView view){
     this.randomPhotoList = randomPhotoList;
     this.view = view;   
-    user.albums().then( _processAlbums);
   }
 
   void delayChanged( ){
@@ -39,14 +40,7 @@ class PicasaPhotoPresentor{
     }
     view.title= "Album '${current.album.title}'  ${current.summary}";
   }
-
-  
-  _processAlbums(List<Album> albums) {
-    print( "here ${albums.length}");
-    albums.forEach( (album)=> album.photos().then( _processPhotos)    );
-  }
-  
-  _processPhotos(List<Photo> photos) {
+  void addPhotosFromAlbum(List<Photo> photos) {
     if( randomPhotoList.originalItems.length ==0){
       _setUpStream();
     }

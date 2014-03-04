@@ -32,9 +32,11 @@ class PicasaPhoto extends PolymerElement implements PicasaPhotoView{
   PicasaPhoto.created() : super.created() {
     
     imgElement = shadowRoot.querySelector('#img-tag');
-    User user = new User( "101488109748928583216", getHttpRequest);
     
-    presentor = new PicasaPhotoPresentor( this, user);
+    presentor = new PicasaPhotoPresentor.create(this);
+    
+    User user = new User( "101488109748928583216", getHttpRequest);
+    user.loadAllAlbums( presentor.addPhotosFromAlbum);    
   }
 
   void delayChanged( ){

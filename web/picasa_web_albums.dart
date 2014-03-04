@@ -11,6 +11,8 @@ import 'package:json_object/json_object.dart';
 //Use this method to make the correct type of httpRequest
 typedef Future<String> HttpRequester(Uri url);
 
+typedef void LoadPhotosFromAlbum( List<Photo> photos);
+
 class Photo{
   final JsonObject json;
   final Album album;
@@ -92,4 +94,15 @@ class User{
       return loadFromJson( json);
     });    
   }
+  
+  void loadAllAlbums( LoadPhotosFromAlbum loadPhotosFromAlbum){
+    
+    void processAlbum( List<Album> albums){
+      albums.forEach( (album){
+        album.photos().then( (photos) => loadPhotosFromAlbum( photos));
+      });
+    }
+    albums().then( (albums) =>processAlbum( albums));
+  }
 }
+
