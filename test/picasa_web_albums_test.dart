@@ -62,7 +62,14 @@ void main(){
       
       Future< List<Album>> albumsFuture = user.albums();      
       expect( albumsFuture.then( (albums)=>isPhotoInAlbum( albums, 'Tessa d\'Jappervilla', "2013-10-26 09.36.22.jpg")), completion(equals( true)));
-    });    
+    }); 
+    //TODO make this work out number of albums
+    test( "Should have 88 albums", (){
+      void loadPhotosFromAlbum( Album album, List<Photo> photos){        
+        print( 'album ${album.title} has ${photos.length} photos');
+      }
+      user.loadAllAlbums( expectAsync2( loadPhotosFromAlbum, count:88));
+    });
   });
 }
 Future<bool> isPhotoInAlbum( List<Album> albums, String albumTitle, String photoTitle){

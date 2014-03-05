@@ -40,7 +40,8 @@ class PicasaPhotoPresentor{
     }
     view.title= "Album '${current.album.title}'  ${current.summary}";
   }
-  void addPhotosFromAlbum(List<Photo> photos) {
+  void addPhotosFromAlbum(Album album, List<Photo> photos) {
+    print( 'loading ${photos.length} photos from ${album.title}');
     if( randomPhotoList.originalItems.length ==0){
       _setUpStream();
     }
