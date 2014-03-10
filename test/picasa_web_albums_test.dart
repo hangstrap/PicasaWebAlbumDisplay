@@ -10,6 +10,17 @@ import 'package:unittest/mock.dart';
 Future<String> getHttpRequest(Uri url) {
     return http.get( url).then( (response)=> response.body);
 }
+Future<String> getStubbedHttpRequest(Uri url) {
+  print( "stub ${url}");
+  if( url.toString() == "https://picasaweb.google.com/data/feed/api/user/9999?alt=json"){
+    return new Future( getXmlForUser);
+  }
+  if( url.toString() == "https://picasaweb.google.com/data/feed/api/user/101488109748928583216/albumid/5938894451891583841?alt=json&imgmax=d"){
+    return new File(  "5938894451891583841").readAsString();
+  }
+    return http.get( url).then( (response)=> response.body);
+}
+
 
 void main(){
   group( "When loading from precanned json data", (){
@@ -38,9 +49,8 @@ void main(){
     
     test("should load albums from json object", (){        
       List<Album> albums = new User("aa", getHttpRequest).loadFromJson( getJsonForUser());
-      expect( albums.length, equals( 85));
+      expect( albums.length, equals( 1));
       expect( albums.first.title, equals( "Tessa d\'Jappervilla"));
-      expect( albums.last.title, equals( "Mana Island"));
     });
   });  
   
@@ -63,12 +73,22 @@ void main(){
       Future< List<Album>> albumsFuture = user.albums();      
       expect( albumsFuture.then( (albums)=>isPhotoInAlbum( albums, 'Tessa d\'Jappervilla', "2013-10-26 09.36.22.jpg")), completion(equals( true)));
     }); 
-    //TODO make this work out number of albums
-    test( "Should have 88 albums", (){
-      void loadPhotosFromAlbum( Album album, List<Photo> photos){        
+  });
+  group( "When server is mocked", (){
+    User user ;
+    setUp((){
+      user = new User( "9999", getStubbedHttpRequest);
+    });
+
+    test( "loadPhotsFromAlub should return one Album when mocked", (){
+      
+      void loadPhotosFromAlbum( Album album, List<Photo> photos){  
+        expect( album.title, equals("Tessa d'Jappervilla"));
+        expect( photos.length, equals( 29));
         print( 'album ${album.title} has ${photos.length} photos');
       }
-      user.loadAllAlbums( expectAsync2( loadPhotosFromAlbum, count:88));
+      
+      user.loadAllAlbums( expectAsync2( loadPhotosFromAlbum, count:1));
     });
   });
 }
@@ -88,14 +108,19 @@ JsonObject getJsonForPhoto() {
   return new JsonObject.fromJsonString( new File(  "photo.json").readAsStringSync());
 }
 
-
+String getXmlForAlbum(){
+  //5938894451891583841 //"album.json"
+  return new File(  "album.json").readAsStringSync();
+}
 JsonObject getJsonForAlbum(){
-  return new JsonObject.fromJsonString( new File(  "album.json").readAsStringSync());  
+  return new JsonObject.fromJsonString( getXmlForAlbum());  
 }
 
-
+String getXmlForUser(){
+  return new File(  "user.json").readAsStringSync();
+}
 JsonObject getJsonForUser(){
-  return new JsonObject.fromJsonString( new File(  "user.json").readAsStringSync(), new JsonObject())  ;
+  return new JsonObject.fromJsonString( getXmlForUser(), new JsonObject())  ;
 }
 
 class MockAlbum extends Mock implements Album{}
