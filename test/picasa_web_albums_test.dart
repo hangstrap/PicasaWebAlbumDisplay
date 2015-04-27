@@ -4,7 +4,7 @@ import 'package:unittest/unittest.dart';
 import 'dart:io';
 import 'dart:async';
 import 'package:http/http.dart' as http;
-import 'package:unittest/mock.dart';
+import 'package:mock/mock.dart';
 
 
 Future<String> getHttpRequest(Uri url) {
@@ -16,7 +16,7 @@ Future<String> getStubbedHttpRequest(Uri url) {
     return new Future( getXmlForUser);
   }
   if( url.toString() == "https://picasaweb.google.com/data/feed/api/user/101488109748928583216/albumid/5938894451891583841?alt=json&imgmax=d"){
-    return new File(  "5938894451891583841").readAsString();
+    return new File(  "test/5938894451891583841").readAsString();
   }
     return http.get( url).then( (response)=> response.body);
 }
@@ -88,7 +88,7 @@ void main(){
         print( 'album ${album.title} has ${photos.length} photos');
       }
       
-      user.loadAllAlbums( expectAsync2( loadPhotosFromAlbum, count:1));
+      user.loadAllAlbums( expectAsync( loadPhotosFromAlbum, count:1));
     });
   });
 }
@@ -105,19 +105,19 @@ Future<bool> isPhotoInAlbum( List<Album> albums, String albumTitle, String photo
 
 
 JsonObject getJsonForPhoto() {
-  return new JsonObject.fromJsonString( new File(  "photo.json").readAsStringSync());
+  return new JsonObject.fromJsonString( new File(  "test/photo.json").readAsStringSync());
 }
 
 String getXmlForAlbum(){
   //5938894451891583841 //"album.json"
-  return new File(  "album.json").readAsStringSync();
+  return new File(  "test/album.json").readAsStringSync();
 }
 JsonObject getJsonForAlbum(){
   return new JsonObject.fromJsonString( getXmlForAlbum());  
 }
 
 String getXmlForUser(){
-  return new File(  "user.json").readAsStringSync();
+  return new File(  "test/user.json").readAsStringSync();
 }
 JsonObject getJsonForUser(){
   return new JsonObject.fromJsonString( getXmlForUser(), new JsonObject())  ;

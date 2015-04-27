@@ -1,5 +1,5 @@
 import 'package:unittest/unittest.dart';
-import 'package:unittest/mock.dart';
+import 'package:mock/mock.dart';
 import '../web/random_photo_list.dart';
 import '../web/picasaphotopresentor.dart';
 import '../web/picasa_web_albums.dart';
@@ -46,7 +46,7 @@ void main(){
       user.when( callsTo( "albums")).thenReturn(  new Future( ()=>listOfAlbums ));    
       album.when( callsTo( "photos")).thenReturn( new Future( ()=>listOfPhotos));
 
-      underTest = new PicasaPhotoPresentor( randomPhotoList, view, user);
+      underTest = new PicasaPhotoPresentor( randomPhotoList, view);
       
     });
     
@@ -54,7 +54,7 @@ void main(){
       user.getLogs( callsTo( "albums")).verify( happenedOnce);
     });
     test( "the photos should be requested from the album", (){
-      expectAsync0( (){
+      expectAsync( (){
         album.getLogs( callsTo( "photos")).verify(  happenedOnce);
         expect( underTest.randomPhotoList.items, hasLength( 1));        
       });

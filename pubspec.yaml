@@ -3,6 +3,7 @@ description: A sample Polymer application
 dependencies:
   http: any
   json_object: any
+  mock: any
   polymer: any
   polymer_ui_elements: any
 dev_dependencies:
